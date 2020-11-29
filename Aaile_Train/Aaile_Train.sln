@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Aaile_Train", "Aaile_Train\Aaile_Train.vcxproj", "{C449F1CD-A618-4B3A-8441-DDB7C77A3E51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C449F1CD-A618-4B3A-8441-DDB7C77A3E51}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C449F1CD-A618-4B3A-8441-DDB7C77A3E51}.Debug|Win32.Build.0 = Debug|Win32
+		{C449F1CD-A618-4B3A-8441-DDB7C77A3E51}.Release|Win32.ActiveCfg = Release|Win32
+		{C449F1CD-A618-4B3A-8441-DDB7C77A3E51}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
