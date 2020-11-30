@@ -55,3 +55,8 @@ void HC_595_Send__Multi_Byte(uint8_t *data, uint16_t len)
 	}
 	HC595_CS();
 }
+void HC595_SendData(uint8_t onbyte)
+{
+	HC595_Write_Byte(onbyte);
+	HC595_CS();
+}

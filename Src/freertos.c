@@ -25,6 +25,7 @@
 #include "cmsis_os.h"
 #include "usart.h"
 #include "BspConfig.h"
+#include "74HC595.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -129,12 +130,22 @@ void StartDefaultTask(void const * argument)
 /* USER CODE BEGIN Application */
 void LED_Drive_CallBack(void const* argument)
 {
+	uint8_t i = 0;
 	for (;;)
 	{
 #if DEBUG_PRINT
-		//Uart_printf(&huart1,"LED Task\r\n");
+		Uart_printf(&huart1,"LED Task\r\n");
 #endif	
-		osDelay(1000);
+		HC595_SendData(1 << i);
+		if (i<7)
+		{
+			i++;
+		}
+		else
+		{
+			i = 0;
+		}
+		osDelay(500);
 
 	}
 }

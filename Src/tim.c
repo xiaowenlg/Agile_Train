@@ -104,7 +104,7 @@ void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		if (tim++>1000)
 		{
 			tim = 0;
-			Uart_printf(&huart1, "tim2 is running\r\n");
+			//Uart_printf(&huart1, "tim2 is running\r\n");
 		}
 	}
 }

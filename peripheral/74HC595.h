@@ -16,4 +16,5 @@ void HC595_Init(void);
 void HC595_Write_Byte(uint8_t onebyte);//输出一个字节
 void HC595_CS(void);		//数据写出
 void HC_595_Send__Multi_Byte(uint8_t *data, uint16_t len);//输出字节数组
+void HC595_SendData(uint8_t onbyte);//发送数据
 #endif // !__74HC595_H_
