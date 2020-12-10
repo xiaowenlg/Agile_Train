@@ -18,6 +18,8 @@
 #define KEY_2					GPIO_PIN_2
 #define KEY_3					GPIO_PIN_3
 #define KEY_4					GPIO_PIN_4
+#define BUTTON_PORT_A			GPIOA
+#define KEY_0					GPIO_PIN_0
 enum my_button_event
 {
 	KEY_STATE_INIT,   //0

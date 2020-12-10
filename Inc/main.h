@@ -65,7 +65,7 @@ void Error_Handler(void);
 #define HC595_SCK_Pin GPIO_PIN_7
 #define HC595_SCK_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-void Key_Regist(void);
+void button_init(void);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

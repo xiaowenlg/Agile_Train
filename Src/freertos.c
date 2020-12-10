@@ -28,6 +28,8 @@
 #include "74HC595.h"
 #include "time.h"
 #include "Button.h"
+#include "flexible_button.h"
+#include <string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -45,7 +47,7 @@ osThreadId LEDDriveHandle; //LED驱动线程
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-Key_Message keys[4] = { 0 };//按键数组
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -55,7 +57,20 @@ Key_Message keys[4] = { 0 };//按键数组
 osThreadId StartTaskHandle;
 
 
-void  Key_CallBack(Key_Message index);//按键回调函数
+
+//按键变量和函数
+typedef enum
+{
+	USER_BUTTON_0 = 0,
+	USER_BUTTON_1,
+	USER_BUTTON_2,
+	USER_BUTTON_3,
+	USER_BUTTON_MAX
+} user_button_t;
+static flex_button_t user_button[USER_BUTTON_MAX];//按钮数组
+static uint8_t common_btn_read(void *arg);//读按键值
+static void common_btn_evt_cb(void *arg);// 按键事件处理函数
+
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void LED_Drive_CallBack(void const* argument);
@@ -145,68 +160,57 @@ void LED_Drive_CallBack(void const* argument)
 //		HC595_SendData(1 << i);
 		//按键测试
 		//Uart_printf(&huart1, "LED Task==%d\r\n",HAL_GPIO_ReadPin(BUTTON_PORT,KEY_2));
-		KeyLoop(keys, Key_CallBack);
+		//KeyLoop(keys, Key_CallBack);
+		flex_button_scan();
 		osDelay(20);
 
 	}
 }
 
 //按键注册
-void Key_Regist(void)
+static uint8_t common_btn_read(void *arg)
 {
-	//k2
-	keys[0].GPIOx = BUTTON_PORT;
-	keys[0].GPIO_Pin = KEY_2;
-	keys[0].keyvalue = 0x00fe;
-	keys[0].Key_count = 4;
-
-	//k3
-	keys[1].GPIOx = BUTTON_PORT;
-	keys[1].GPIO_Pin = KEY_3;
-	keys[1].keyvalue = 0x00fd;
-	keys[1].Key_count = 4;
-
-	//k4
-	keys[2].GPIOx = BUTTON_PORT;
-	keys[2].GPIO_Pin = KEY_4;
-	keys[2].keyvalue = 0x00fb;
-	keys[2].Key_count = 4;
-	//pa0
-	keys[3].GPIOx = GPIOA;
-	keys[3].GPIO_Pin = GPIO_PIN_0;
-	keys[3].keyvalue = 0x00f7;
-	keys[3].Key_count = 4;
+	flex_button_t *btn = (flex_button_t *)arg; //类型强制转换
+	uint8_t value = 0;
+	switch (btn->id)
+	{
+	case USER_BUTTON_0:
+		value = HAL_GPIO_ReadPin(BUTTON_PORT_A, KEY_0); break;
+	case USER_BUTTON_1:
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_4); break;
+	case USER_BUTTON_2:
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_3); break;
+	case USER_BUTTON_3:
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_2); break;
+	default:
+		break;
+	}
 }
-void  Key_CallBack(Key_Message index)
+ void button_init(void)
 {
-	static uint8_t i = 0;
-	if (index.GPIO_Pin==KEY_3)
+	memset(&user_button[0], 0x0, sizeof(user_button));//清空结构体变量数组
+	for (uint8_t i = 0; i < USER_BUTTON_MAX; i++)
 	{
-		//Uart_printf(&huart1, "LED Task=====+++++++++++++%d\r\n",index.keyvalue);
-		if (index.keyvalue&KEY_UP)
-		{
-			i++;
-			Uart_printf(&huart1, "LED Task%d\r\n",i);
-			
-		}
-		
+		user_button[i].id = i;
+		user_button[i].usr_button_read = common_btn_read;
+		user_button[i].cb = common_btn_evt_cb;
+		user_button[i].pressed_logic_level = 0;
+		user_button[i].short_press_start_tick = FLEX_MS_TO_SCAN_CNT(1500);
+		user_button[i].long_press_start_tick = FLEX_MS_TO_SCAN_CNT(3000);
+		user_button[i].long_hold_start_tick = FLEX_MS_TO_SCAN_CNT(4500);
+
+		flex_button_register(&user_button[i]);
 	}
-	if (index.GPIO_Pin == GPIO_PIN_0)
+}
+static void common_btn_evt_cb(void *arg)
+{
+	flex_button_t *btn = (flex_button_t *)arg;
+
+	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_CLICK)
 	{
-		//Uart_printf(&huart1, "LED Task=====+++++++++++++%d\r\n",index.keyvalue);
-		if (index.keyvalue&KEY_DOWN)
-		{
-			i++;
-			Uart_printf(&huart1, "KEY_DOWN\r\n");
-
-		}
-		if (index.keyvalue&KEY_LONG)
-		{
-			i++;
-			Uart_printf(&huart1, "KEY_LONG\r\n");
-
-		}
+		Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START id=%d\r\n",btn->id);
 	}
+	
 }
 /* USER CODE END Application */
 

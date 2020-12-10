@@ -1,5 +1,6 @@
 /*****************按键程序**********************
 *试用方法
+*总述:按键值有16位组成，高8位代表按键状态，低8位代表当前被按下的那个键，被按下的位为0，按键初始化时把此位设为0即可
 *1:初始化按键引脚
 *2:声明一个按键结构体数组Key_Message
 *3:初始化按键结构体数组
@@ -11,6 +12,7 @@
 			#define	KEY_LONG                0x4000	   //长按
 			#define	KEY_CONTINUE			0x2000	   //连续
 			#define	KEY_UP     				0x1000	   //抬起
+	定义按键值的规则:被按下的位为0
 */
 #include "Button.h"
 #include "usart.h"
@@ -25,12 +27,12 @@ void Button_GPIO_Init()
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(BUTTON_PORT, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin = GPIO_PIN_0;
+	GPIO_InitStruct.Pin = KEY_0;
 	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	HAL_GPIO_Init(BUTTON_PORT_A, &GPIO_InitStruct);
 }
-
+//返回被按下的按键
 Key_Message KeyScan(Key_Message *keys)
 {
 	static	Key_Message key_null = { 0 }; //按键结构体
@@ -45,10 +47,10 @@ Key_Message KeyScan(Key_Message *keys)
 		}
 		
 	}
-	
 	key_null.keyvalue = 0xff;    //返回按键抬起后按键值
 	return key_null;
 }
+//处理被按下的按键
 void KeyLoop(Key_Message *keys, fun callback)
 {
 
