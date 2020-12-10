@@ -101,6 +101,7 @@ void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	static uint16_t tim = 0;
 	if (htim->Instance==TIM2)
 	{
+		
 		if (tim++>1000)
 		{
 			tim = 0;

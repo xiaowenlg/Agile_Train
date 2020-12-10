@@ -49,7 +49,6 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, HC595_DS_Pin|HC595_RCK_Pin|HC595_SCK_Pin, GPIO_PIN_SET);
-
   /*Configure GPIO pins : PAPin PAPin PAPin */
   GPIO_InitStruct.Pin = HC595_DS_Pin|HC595_RCK_Pin|HC595_SCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

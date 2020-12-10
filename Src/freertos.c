@@ -26,6 +26,8 @@
 #include "usart.h"
 #include "BspConfig.h"
 #include "74HC595.h"
+#include "time.h"
+#include "Button.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -43,7 +45,7 @@ osThreadId LEDDriveHandle; //LED驱动线程
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+Key_Message keys[4] = { 0 };//按键数组
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -52,6 +54,8 @@ osThreadId LEDDriveHandle; //LED驱动线程
 /* USER CODE END Variables */
 osThreadId StartTaskHandle;
 
+
+void  Key_CallBack(Key_Message index);//按键回调函数
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void LED_Drive_CallBack(void const* argument);
@@ -133,20 +137,75 @@ void LED_Drive_CallBack(void const* argument)
 	uint8_t i = 0;
 	for (;;)
 	{
-#if DEBUG_PRINT
-		Uart_printf(&huart1,"LED Task\r\n");
-#endif	
-		HC595_SendData(1 << i);
-		if (i<7)
+		
+//		i = rand() % 7 ;      //产生一个30到50的随机数
+//#if DEBUG_PRINT
+//		Uart_printf(&huart1,"LED Task\r\n");
+//#endif	
+//		HC595_SendData(1 << i);
+		//按键测试
+		//Uart_printf(&huart1, "LED Task==%d\r\n",HAL_GPIO_ReadPin(BUTTON_PORT,KEY_2));
+		KeyLoop(keys, Key_CallBack);
+		osDelay(20);
+
+	}
+}
+
+//按键注册
+void Key_Regist(void)
+{
+	//k2
+	keys[0].GPIOx = BUTTON_PORT;
+	keys[0].GPIO_Pin = KEY_2;
+	keys[0].keyvalue = 0x00fe;
+	keys[0].Key_count = 4;
+
+	//k3
+	keys[1].GPIOx = BUTTON_PORT;
+	keys[1].GPIO_Pin = KEY_3;
+	keys[1].keyvalue = 0x00fd;
+	keys[1].Key_count = 4;
+
+	//k4
+	keys[2].GPIOx = BUTTON_PORT;
+	keys[2].GPIO_Pin = KEY_4;
+	keys[2].keyvalue = 0x00fb;
+	keys[2].Key_count = 4;
+	//pa0
+	keys[3].GPIOx = GPIOA;
+	keys[3].GPIO_Pin = GPIO_PIN_0;
+	keys[3].keyvalue = 0x00f7;
+	keys[3].Key_count = 4;
+}
+void  Key_CallBack(Key_Message index)
+{
+	static uint8_t i = 0;
+	if (index.GPIO_Pin==KEY_3)
+	{
+		//Uart_printf(&huart1, "LED Task=====+++++++++++++%d\r\n",index.keyvalue);
+		if (index.keyvalue&KEY_UP)
 		{
 			i++;
+			Uart_printf(&huart1, "LED Task%d\r\n",i);
+			
 		}
-		else
+		
+	}
+	if (index.GPIO_Pin == GPIO_PIN_0)
+	{
+		//Uart_printf(&huart1, "LED Task=====+++++++++++++%d\r\n",index.keyvalue);
+		if (index.keyvalue&KEY_DOWN)
 		{
-			i = 0;
-		}
-		osDelay(500);
+			i++;
+			Uart_printf(&huart1, "KEY_DOWN\r\n");
 
+		}
+		if (index.keyvalue&KEY_LONG)
+		{
+			i++;
+			Uart_printf(&huart1, "KEY_LONG\r\n");
+
+		}
 	}
 }
 /* USER CODE END Application */

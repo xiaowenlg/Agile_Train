@@ -15,6 +15,7 @@
   *                             www.st.com/SLA0044
   *
   ******************************************************************************
+  *敏捷训练器
   */
 /* USER CODE END Header */
 
@@ -27,6 +28,9 @@
 #include "gpio.h"
 #include "dwt_stm32_delay.h"
 #include "74HC595.h"
+#include<stdlib.h>
+#include<time.h>
+#include "Button.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -102,7 +106,8 @@ int main(void)
   MX_USART3_UART_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE BEGIN 2 */
-
+  Button_GPIO_Init();//按键接口初始化
+  Key_Regist();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

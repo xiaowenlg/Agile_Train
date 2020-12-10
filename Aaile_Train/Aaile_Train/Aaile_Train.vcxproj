@@ -77,6 +77,7 @@
   <ItemGroup />
   <ItemGroup>
     <ClCompile Include="..\..\peripheral\74HC595.c" />
+    <ClCompile Include="..\..\peripheral\Button.c" />
     <ClCompile Include="..\..\peripheral\dwt_stm32_delay.c" />
     <ClCompile Include="..\..\peripheral\WTN6.c" />
     <ClCompile Include="..\..\Src\gpio.c" />
@@ -112,6 +113,7 @@
     <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c" />
     <ClCompile Include="..\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" />
     <ClInclude Include="..\..\peripheral\74HC595.h" />
+    <ClInclude Include="..\..\peripheral\Button.h" />
     <ClInclude Include="..\..\peripheral\dwt_stm32_delay.h" />
     <ClInclude Include="..\..\peripheral\system.h" />
     <ClInclude Include="..\..\peripheral\WTN6.h" />
