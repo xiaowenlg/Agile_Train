@@ -16,7 +16,7 @@ LINUX_PACKAGES :=
 CFLAGS := -ggdb -ffunction-sections -O3
 CXXFLAGS := -ggdb -ffunction-sections -fno-exceptions -fno-rtti -O3
 ASFLAGS := 
-LDFLAGS := -Wl,-gc-sections
+LDFLAGS := -Wl,-gc-sections -Wl,-q
 COMMONFLAGS := 
 LINKER_SCRIPT := 
 

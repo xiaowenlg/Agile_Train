@@ -30,6 +30,7 @@
 #include "Button.h"
 #include "flexible_button.h"
 #include <string.h>
+#include <stdlib.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -43,6 +44,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 osThreadId LEDDriveHandle; //LED驱动线程
+osThreadId TestStaskHandle;//调试线程
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -74,6 +76,7 @@ static void common_btn_evt_cb(void *arg);// 按键事件处理函数
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void LED_Drive_CallBack(void const* argument);
+void Test_Task_CallBack(void const *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
@@ -134,9 +137,9 @@ void StartDefaultTask(void const * argument)
 	//传感器驱动线程
 	osThreadDef(LED_Drive, LED_Drive_CallBack, 4, 0, 128);
 	LEDDriveHandle = osThreadCreate(osThread(LED_Drive), NULL);
-	//按键处理线程
-	/*osThreadDef(ButtonProcess, ButtonProcess_CallBack, 5, 0, 128);
-	ButtonProcessHandle = osThreadCreate(osThread(ButtonProcess), NULL);*/
+	//调试线程
+	osThreadDef(Test_Task,Test_Task_CallBack,3,0,128);
+	TestStaskHandle = osThreadCreate(osThread(Test_Task), NULL);
 #if DEBUG_PRINT
 	Uart_printf(&huart1, "Start sub stask\r\n");
 #endif	
@@ -149,7 +152,7 @@ void StartDefaultTask(void const * argument)
 /* USER CODE BEGIN Application */
 void LED_Drive_CallBack(void const* argument)
 {
-	uint8_t i = 0;
+	
 	for (;;)
 	{
 		
@@ -161,12 +164,22 @@ void LED_Drive_CallBack(void const* argument)
 		//按键测试
 		//Uart_printf(&huart1, "LED Task==%d\r\n",HAL_GPIO_ReadPin(BUTTON_PORT,KEY_2));
 		//KeyLoop(keys, Key_CallBack);
-		flex_button_scan();
+
+		flex_button_scan();//按键扫描
 		osDelay(20);
 
 	}
 }
-
+void Test_Task_CallBack(void const *argument)
+{
+	uint8_t p = 0;
+	for (;;)
+	{
+		p = rand() % 7;      
+		Uart_printf(&huart1, "Rand num= %d\r\n",p);
+		osDelay(500);
+	}
+}
 //按键注册
 static uint8_t common_btn_read(void *arg)
 {
@@ -208,9 +221,12 @@ static void common_btn_evt_cb(void *arg)
 
 	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_CLICK)
 	{
-		Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START id=%d\r\n",btn->id);
+		Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n",btn->id);
 	}
-	
+	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_LONG_START)
+	{
+		Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START id=%d\r\n", btn->id);
+	}
 }
 /* USER CODE END Application */
 
