@@ -58,12 +58,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define HC595_DS_Pin GPIO_PIN_5
-#define HC595_DS_GPIO_Port GPIOA
-#define HC595_RCK_Pin GPIO_PIN_6
-#define HC595_RCK_GPIO_Port GPIOA
-#define HC595_SCK_Pin GPIO_PIN_7
-#define HC595_SCK_GPIO_Port GPIOA
+
 /* USER CODE BEGIN Private defines */
 void button_init(void);
 /* USER CODE END Private defines */

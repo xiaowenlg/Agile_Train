@@ -4,12 +4,12 @@
 #include "stdint.h"
 #include "stm32f1xx_hal.h"
 //74HC595Òý½Å
-#define HC595_DS_Pin GPIO_PIN_5
-#define HC595_DS_GPIO_Port GPIOA
-#define HC595_RCK_Pin GPIO_PIN_6
-#define HC595_RCK_GPIO_Port GPIOA
-#define HC595_SCK_Pin GPIO_PIN_7
-#define HC595_SCK_GPIO_Port GPIOA
+#define HC595_DS_Pin GPIO_PIN_12
+#define HC595_DS_GPIO_Port GPIOB
+#define HC595_RCK_Pin GPIO_PIN_13
+#define HC595_RCK_GPIO_Port GPIOB
+#define HC595_SCK_Pin GPIO_PIN_14
+#define HC595_SCK_GPIO_Port GPIOB
 
 //³õÊ¼»¯
 void HC595_Init(void);

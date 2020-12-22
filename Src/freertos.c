@@ -58,8 +58,6 @@ osThreadId TestStaskHandle;//调试线程
 /* USER CODE END Variables */
 osThreadId StartTaskHandle;
 
-
-
 //按键变量和函数
 typedef enum
 {
@@ -166,6 +164,7 @@ void LED_Drive_CallBack(void const* argument)
 		//KeyLoop(keys, Key_CallBack);
 
 		flex_button_scan();//按键扫描
+		
 		osDelay(20);
 
 	}
@@ -175,9 +174,9 @@ void Test_Task_CallBack(void const *argument)
 	uint8_t p = 0;
 	for (;;)
 	{
-		p = rand() % 7;      
-		Uart_printf(&huart1, "Rand num= %d\r\n",p);
-		osDelay(500);
+		p = rand() % 7;   
+		HC595_SendData(1 << p);
+		osDelay(1000);
 	}
 }
 //按键注册
@@ -188,13 +187,13 @@ static uint8_t common_btn_read(void *arg)
 	switch (btn->id)
 	{
 	case USER_BUTTON_0:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT_A, KEY_0); break;
+		value = HAL_GPIO_ReadPin(BUTTON_PORT_A, KEY_0); break;   //按键id=3
 	case USER_BUTTON_1:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_4); break;
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_4); break;//按键id=2
 	case USER_BUTTON_2:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_3); break;
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_3); break;//按键id=1
 	case USER_BUTTON_3:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_2); break;
+		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_2); break;//按键id=0
 	default:
 		break;
 	}
@@ -218,12 +217,13 @@ static uint8_t common_btn_read(void *arg)
 static void common_btn_evt_cb(void *arg)
 {
 	flex_button_t *btn = (flex_button_t *)arg;
-
+	//Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	
 	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_CLICK)
 	{
-		Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n",btn->id);
+		Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
 	}
-	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_LONG_START)
+	if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_LONG_START)
 	{
 		Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START id=%d\r\n", btn->id);
 	}

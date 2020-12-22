@@ -18,12 +18,13 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include "FreeRTOS.h"
 #include "tim.h"
-
+#include "task.h"
+#include "cmsis_os.h"
 /* USER CODE BEGIN 0 */
 #include "usart.h"
 /* USER CODE END 0 */
-
 TIM_HandleTypeDef htim2;
 
 /* TIM2 init function */
@@ -105,6 +106,7 @@ void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		{
 			tim = 0;
 			//Uart_printf(&huart1, "tim2 is running\r\n");
+			
 		}
 	}
 }
