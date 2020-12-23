@@ -34,6 +34,7 @@
 #include<time.h>
 #include "Button.h"
 #include "Led.h"
+#include "Key.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -112,6 +113,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE BEGIN 2 */
   Button_GPIO_Init();//按键接口初始化
+  Key_GPIO_Init();
   button_init();//按键注册函数
   /* USER CODE END 2 */
 

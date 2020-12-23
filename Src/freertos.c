@@ -32,6 +32,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Led.h"
+#include "Key.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -60,14 +61,7 @@ osThreadId TestStaskHandle;//调试线程
 osThreadId StartTaskHandle;
 
 //按键变量和函数
-typedef enum
-{
-	USER_BUTTON_0 = 0,
-	USER_BUTTON_1,
-	USER_BUTTON_2,
-	USER_BUTTON_3,
-	USER_BUTTON_MAX
-} user_button_t;
+
 static flex_button_t user_button[USER_BUTTON_MAX];//按钮数组
 static uint8_t common_btn_read(void *arg);//读按键值
 static void common_btn_evt_cb(void *arg);// 按键事件处理函数
@@ -177,31 +171,39 @@ void Test_Task_CallBack(void const *argument)
 	for (;;)
 	{
 		p = rand() % 7;   
-		HC595_SendData(1 << p);
+		HC595_SendData(1 << 0);
 		Led_App(1 << p);
-		osDelay(200);
+		//Uart_printf(&huart1, "LED_Value=%d\r\n", p);
+		osDelay(500);
 	}
 }
 //按键注册
-static uint8_t common_btn_read(void *arg)
+static uint8_t common_btn_read(void *arg) //读按键函数
 {
 	flex_button_t *btn = (flex_button_t *)arg; //类型强制转换
 	uint8_t value = 0;
 	switch (btn->id)
 	{
 	case USER_BUTTON_0:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT_A, KEY_0); break;   //按键id=3
+		value = HAL_GPIO_ReadPin(K4_6_PORT, K6_PIN); break;   //按键id=3
 	case USER_BUTTON_1:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_4); break;//按键id=2
+		value = HAL_GPIO_ReadPin(K4_6_PORT, K5_PIN); break;//按键id=2
 	case USER_BUTTON_2:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_3); break;//按键id=1
+		value = HAL_GPIO_ReadPin(K4_6_PORT, K4_PIN); break;//按键id=1
 	case USER_BUTTON_3:
-		value = HAL_GPIO_ReadPin(BUTTON_PORT, KEY_2); break;//按键id=0
+		value = HAL_GPIO_ReadPin(K0_3_PORT, K3_PIN); break;//按键id=0
+	case USER_BUTTON_4:
+		value = HAL_GPIO_ReadPin(K0_3_PORT, K2_PIN); break;//按键id=0
+	case USER_BUTTON_5:
+		value = HAL_GPIO_ReadPin(K0_3_PORT, K1_PIN); break;//按键id=0
+	case USER_BUTTON_6:
+		value = HAL_GPIO_ReadPin(K0_3_PORT, K0_PIN); break;//按键id=0
 	default:
 		break;
 	}
+	return value;
 }
- void button_init(void)
+ void button_init(void)//按键初始
 {
 	memset(&user_button[0], 0x0, sizeof(user_button));//清空结构体变量数组
 	for (uint8_t i = 0; i < USER_BUTTON_MAX; i++)
@@ -217,19 +219,41 @@ static uint8_t common_btn_read(void *arg)
 		flex_button_register(&user_button[i]);
 	}
 }
-static void common_btn_evt_cb(void *arg)
+static void common_btn_evt_cb(void *arg)//按键事件回调函数
 {
 	flex_button_t *btn = (flex_button_t *)arg;
-	//Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	//Uart_printf(&huart1, "Button id=%d\r\n", btn->id);
 	
-	if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_CLICK)
+	if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_CLICK)
 	{
 		Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
 	}
-	if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_LONG_START)
+	 if (flex_button_event_read(&user_button[USER_BUTTON_1]) == FLEX_BTN_PRESS_CLICK)
 	{
-		Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START id=%d\r\n", btn->id);
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
 	}
+	 if (flex_button_event_read(&user_button[USER_BUTTON_2]) == FLEX_BTN_PRESS_CLICK)
+	{
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	}
+	 if (flex_button_event_read(&user_button[USER_BUTTON_3]) == FLEX_BTN_PRESS_CLICK)
+	{
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	}
+	 if (flex_button_event_read(&user_button[USER_BUTTON_4]) == FLEX_BTN_PRESS_CLICK)
+	{
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	}
+	 if (flex_button_event_read(&user_button[USER_BUTTON_5]) == FLEX_BTN_PRESS_CLICK)
+	{
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	}
+	 if (flex_button_event_read(&user_button[USER_BUTTON_6]) == FLEX_BTN_PRESS_CLICK)
+	 {
+		 Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d\r\n", btn->id);
+	 }
+	
+	
 }
 /* USER CODE END Application */
 

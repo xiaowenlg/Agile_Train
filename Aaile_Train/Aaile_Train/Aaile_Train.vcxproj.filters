@@ -378,6 +378,9 @@
     <ClCompile Include="..\..\peripheral\Led.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\peripheral\Key.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BspConfig.h">
@@ -402,6 +405,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\peripheral\Led.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\peripheral\Key.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
