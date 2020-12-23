@@ -31,6 +31,7 @@
 #include "flexible_button.h"
 #include <string.h>
 #include <stdlib.h>
+#include "Led.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -162,7 +163,8 @@ void LED_Drive_CallBack(void const* argument)
 		//°´¼ü²âÊÔ
 		//Uart_printf(&huart1, "LED Task==%d\r\n",HAL_GPIO_ReadPin(BUTTON_PORT,KEY_2));
 		//KeyLoop(keys, Key_CallBack);
-
+		
+		//HAL_GPIO_WritePin(GPIOA, LED0,0);
 		flex_button_scan();//°´¼üÉ¨Ãè
 		
 		osDelay(20);
@@ -176,7 +178,8 @@ void Test_Task_CallBack(void const *argument)
 	{
 		p = rand() % 7;   
 		HC595_SendData(1 << p);
-		osDelay(1000);
+		Led_App(1 << p);
+		osDelay(200);
 	}
 }
 //°´¼ü×¢²á

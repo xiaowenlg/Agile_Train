@@ -17,6 +17,7 @@
   ******************************************************************************
   *敏捷训练器
   *2020/12/22：改程序到实际板子中测试LED灯成功
+  *2020/12/23：加入板载LED灯驱动
   */
 /* USER CODE END Header */
 
@@ -32,6 +33,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include "Button.h"
+#include "Led.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -99,6 +101,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   //MX_GPIO_Init();
+  LED_Init();
+  Led_Reg();
   HC595_Init();//595初始化
   MX_ADC1_Init();
   MX_TIM2_Init();

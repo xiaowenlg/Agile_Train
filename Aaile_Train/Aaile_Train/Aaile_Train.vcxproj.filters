@@ -375,6 +375,9 @@
     <ClCompile Include="..\..\peripheral\flexible_button.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\peripheral\Led.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BspConfig.h">
@@ -396,6 +399,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\peripheral\flexible_button.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\peripheral\Led.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
