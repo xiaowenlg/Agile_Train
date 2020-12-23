@@ -29,7 +29,10 @@
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
-
+	 //周期内分段运行
+#define TIMER_ALL_PERIOD        1            //单位ms  定时器运行周期(大周期)
+//按周期运行
+#define PERIOD_DO_EXECUTE(TICK,PERIOD)          ((TICK)%(PERIOD/TIMER_ALL_PERIOD) == 0)
 extern TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN Private defines */

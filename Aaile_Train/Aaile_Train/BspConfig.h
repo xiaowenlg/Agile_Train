@@ -87,6 +87,10 @@
 #define WEIGHT_MIN				1000						//最小开启的拉力值
 #define NO_GRIP_NUM(n)			n*1000						//n秒提示一次:"请用力握住握力器"
 #define TIP_COUNT				2							//提示次数
+
+
+#define  TIM_LONG				60							//每局的时长单位s
+#define  TIM_PERIOD				1000						//时间检测周期1000ms
 //调试开关
 #define DEBUG_PRINT					1                                
 #endif // !__BSPCONFIG_H

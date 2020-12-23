@@ -24,9 +24,12 @@
 #include "cmsis_os.h"
 /* USER CODE BEGIN 0 */
 #include "usart.h"
+#include "BspConfig.h"
 /* USER CODE END 0 */
 TIM_HandleTypeDef htim2;
-
+extern uint16_t Game_Tim_Long;//游戏时长
+extern _Bool Notice_flg;//时间到换下一个灯亮
+extern uint16_t Led_period;//亮灯周期
 /* TIM2 init function */
 void MX_TIM2_Init(void)
 {
@@ -99,15 +102,26 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 /* USER CODE BEGIN 1 */
 void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	static uint16_t tim = 0;
-	if (htim->Instance==TIM2)
+	static uint16_t tim = 0; static uint32_t tick = 0;////////////////////////////////
+	if (htim->Instance == TIM2)
 	{
-		if (tim++>1000)
+
+		tim = 0;
+		//Uart_printf(&huart1, "tim2 is running\r\n");
+		if (PERIOD_DO_EXECUTE(tick, TIM_PERIOD)) //检测频率
 		{
-			tim = 0;
-			//Uart_printf(&huart1, "tim2 is running\r\n");
-			
+			if (Game_Tim_Long> 0)
+			{
+				Game_Tim_Long--;
+			}
 		}
+		if (PERIOD_DO_EXECUTE(tick,Led_period))
+		{
+			Notice_flg =1;
+		}
+			
+
+			tick++;
 	}
 }
 /* USER CODE END 1 */
