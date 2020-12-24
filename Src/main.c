@@ -18,6 +18,7 @@
   *敏捷训练器
   *2020/12/22：改程序到实际板子中测试LED灯成功
   *2020/12/23：加入板载LED灯驱动
+  *2020/12/24：加入屏去驱动成功
   */
 /* USER CODE END Header */
 
@@ -109,7 +110,7 @@ int main(void)
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
-  MX_USART3_UART_Init();
+  //MX_USART3_UART_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE BEGIN 2 */
   Button_GPIO_Init();//按键接口初始化

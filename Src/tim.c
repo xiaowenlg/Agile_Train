@@ -108,14 +108,14 @@ void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 		tim = 0;
 		//Uart_printf(&huart1, "tim2 is running\r\n");
-		if (PERIOD_DO_EXECUTE(tick, TIM_PERIOD)) //检测频率
+		if (PERIOD_DO_EXECUTE(tick, TIM_PERIOD)) //游戏时间倒计时
 		{
-			if (Game_Tim_Long> 0)
+			if (Game_Tim_Long>= 0)
 			{
 				Game_Tim_Long--;
 			}
 		}
-		if (PERIOD_DO_EXECUTE(tick,Led_period))
+		if (PERIOD_DO_EXECUTE(tick,Led_period))//亮灯切换频率
 		{
 			Notice_flg =1;
 		}

@@ -14,7 +14,6 @@
 
 #define  UART_BLE				&huart1			//蓝牙
 #define  UART_ULTRASONIC		&huart2			//超声波接口	
-#define  UART_TFT				&huart3			//TFT屏(武汉晶显)
 
 
 //电压检测引脚
@@ -91,6 +90,13 @@
 
 #define  TIM_LONG				60							//每局的时长单位s
 #define  TIM_PERIOD				1000						//时间检测周期1000ms
+//屏幕地值
+#define	TFT_ADRESS_TIM_BACK		0x0001						//倒计时地址
+#define TFT_ADRESS_SCOERE			0x0002						//击中次数
+#define TFT_ADRESS_COUNT		0x0004						//总点击次数
+#define TFT_ADRESS_BT			0x0003						//电池电量
+#define TFT_ADRESS_DISHU		0x0005						//地鼠变量图标
+#define TFT_BUTTON				0x4F						//TFT屏上的按钮
 //调试开关
 #define DEBUG_PRINT					1                                
 #endif // !__BSPCONFIG_H

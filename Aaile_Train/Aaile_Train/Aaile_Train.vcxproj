@@ -82,6 +82,7 @@
     <ClCompile Include="..\..\peripheral\flexible_button.c" />
     <ClCompile Include="..\..\peripheral\Key.c" />
     <ClCompile Include="..\..\peripheral\Led.c" />
+    <ClCompile Include="..\..\peripheral\TFT_Driver.c" />
     <ClCompile Include="..\..\peripheral\WTN6.c" />
     <ClCompile Include="..\..\Src\gpio.c" />
     <ClCompile Include="..\..\Src\adc.c" />
@@ -122,6 +123,7 @@
     <ClInclude Include="..\..\peripheral\Key.h" />
     <ClInclude Include="..\..\peripheral\Led.h" />
     <ClInclude Include="..\..\peripheral\system.h" />
+    <ClInclude Include="..\..\peripheral\TFT_Driver.h" />
     <ClInclude Include="..\..\peripheral\WTN6.h" />
     <ClInclude Include="BspConfig.h" />
     <None Include="stm32.mak" />

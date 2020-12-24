@@ -381,6 +381,9 @@
     <ClCompile Include="..\..\peripheral\Key.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\peripheral\TFT_Driver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BspConfig.h">
@@ -408,6 +411,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\peripheral\Key.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\peripheral\TFT_Driver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
