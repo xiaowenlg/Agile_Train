@@ -27,7 +27,7 @@
 #include "BspConfig.h"
 /* USER CODE END 0 */
 TIM_HandleTypeDef htim2;
-extern uint16_t Game_Tim_Long;//游戏时长
+extern int Game_Tim_Long;//游戏时长
 extern _Bool Notice_flg;//时间到换下一个灯亮
 extern uint16_t Led_period;//亮灯周期
 /* TIM2 init function */

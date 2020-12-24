@@ -59,7 +59,7 @@ osThreadId ButtonScanStaskHandle;//调试线程
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 /***************tim.c中的全局变量*******************/
-uint16_t Game_Tim_Long = 0;//游戏时长
+int Game_Tim_Long = 0;//游戏时长
 _Bool Notice_flg = 0;
 uint16_t Led_period;//亮灯周期
 /***************************************************/
@@ -172,6 +172,7 @@ void LED_Drive_CallBack(void const* argument)  //LED驱动线程
 				HC595_SendData(1 << Move_Index);
 				Led_App(1 << Move_Index);
 				write_variable_store_82_1word(TFT_ADRESS_DISHU,Move_Index+1);//地鼠出动
+				TFT_Beep(2);// bi-bi 声音
 				write_register_80_1byte(TFT_BUTTON, 1);
 				//Uart_printf(&huart1, "LED_Value=%d,period=%d\r\n", Move_Index, Game_Tim_Long);
 				Notice_flg = 0;
@@ -296,6 +297,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 				value = Move_Index&(~Move_Index);
 				HC595_SendData(value);
 				write_variable_store_82_1word(TFT_ADRESS_DISHU, value);
+				TFT_Beep(50);//长鸣一下
 				User_score++;
 				Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d,The Score = %d\r\n", key_id, User_score);
 			}
