@@ -28,6 +28,7 @@
 /* USER CODE END 0 */
 TIM_HandleTypeDef htim2;
 extern int Game_Tim_Long;//游戏时长
+extern int debug_count;//调试led灯用
 extern _Bool Notice_flg;//时间到换下一个灯亮
 extern uint16_t Led_period;//亮灯周期
 /* TIM2 init function */
@@ -113,6 +114,10 @@ void  HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			if (Game_Tim_Long>= 0)
 			{
 				Game_Tim_Long--;
+			}
+			if (debug_count<7)
+			{
+				debug_count++;
 			}
 		}
 		if (PERIOD_DO_EXECUTE(tick,Led_period))//亮灯切换频率

@@ -186,7 +186,7 @@ void stopmusic(uint16_t num)
 // Qualifier:ÇĞ»»Ò³Ãæ
 // ²ÎÊı: uint16_t num
 //************************************
-void Turen_Pic(uint16_t num)
+uint8_t Turen_Pic(uint16_t num)
 {
 	uint8_t senddat[2] = { 0 };
 
@@ -194,6 +194,7 @@ void Turen_Pic(uint16_t num)
 	senddat[1] = num & 0x00ff;
 	write_multiple_register_80(0x03, 2, senddat);
 	//pageID = num;
+	return num; //·µ»ØÒ³ÃæID
 }
 void TFT_Beep(uint8_t n)//TFTÆÁ·äÃùÆ÷
 {

@@ -88,11 +88,11 @@
 #define TIP_COUNT				2							//提示次数
 
 
-#define  TIM_LONG				20							//每局的时长单位s
+#define  TIM_LONG				60							//每局的时长单位s
 #define  TIM_PERIOD				1000						//时间检测周期1000ms
 //屏幕地值
 #define	TFT_ADRESS_TIM_BACK		0x0001						//倒计时地址
-#define TFT_ADRESS_SCOERE			0x0002						//击中次数
+#define TFT_ADRESS_SCOERE		0x0002						//击中次数
 #define TFT_ADRESS_COUNT		0x0004						//总点击次数
 #define TFT_ADRESS_BT			0x0003						//电池电量
 #define TFT_ADRESS_DISHU		0x0005						//地鼠变量图标

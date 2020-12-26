@@ -14,7 +14,7 @@ void write_multiple_variable_store_82(uint16_t address, uint8_t data_length, uin
 void TFT_playsound(uint8_t data_length, uint8_t *data, UART_HandleTypeDef *huart);//TFT²¥·ÅÓïÒô;
 void playmusic(uint16_t num, uint8_t val);
 void stopmusic(uint16_t num);
-void Turen_Pic(uint16_t num);
+uint8_t Turen_Pic(uint16_t num);
 void TFT_Beep(uint8_t n);//TFTÆÁ·äÃùÆ÷;
 void TFT_Readbytes(uint8_t adress, uint8_t readlen, UART_HandleTypeDef *huart);//¶Á¼Ä´æÆ÷;
 void SetSountValue(uint8_t val);
