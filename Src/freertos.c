@@ -69,6 +69,7 @@ uint16_t GradeArr[5] = {300,600,1000,2000,5000};//游戏等级
 uint16_t Press_Count = 0;//按下的总次数(包括按对和按错的)
 _Bool GameOver_flg = 0;//游戏结束标志位 1结束 0开始
 uint8_t Press_User_num = 0;//当用户按对时只有一次计分，防止多次按下计分
+uint8_t Last_score = 0;//最终成绩
 /* USER CODE END Variables */
 
 
@@ -141,7 +142,7 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
 	taskENTER_CRITICAL();//进入临界区
 	//进入介绍界面后停留5-10s
-
+	Turen_Pic(TFT_PAGE_DAT);
 	//开定时器，进入数据界面
 	//外设LED驱动线程
 	osThreadDef(LED_Drive, LED_Drive_CallBack, 4, 0, 128);
@@ -161,18 +162,19 @@ void StartDefaultTask(void const * argument)
 /* USER CODE BEGIN Application */
 void LED_Drive_CallBack(void const* argument)  //LED驱动线程
 {
-	
+	uint8_t tft_count = 0;//向tft发送数据的次数S
 	for (;;)
 	{
 		if (Game_Tim_Long >= 0)//判断是否到结束时间
 		{
+			tft_count = 0;
 			if (Notice_flg)  //定时器控制灯标志位判断
 			{
 				Move_Index = rand() % 7;		//
 				HC595_SendData(1 << Move_Index);
 				Led_App(1 << Move_Index);
 				write_variable_store_82_1word(TFT_ADRESS_DISHU,Move_Index+1);//地鼠出动
-				TFT_Beep(2);// bi-bi 声音
+				//TFT_Beep(2);// bi-bi 声音
 				write_register_80_1byte(TFT_BUTTON, 1);
 				//Uart_printf(&huart1, "LED_Value=%d,period=%d\r\n", Move_Index, Game_Tim_Long);
 				Notice_flg = 0;
@@ -185,6 +187,30 @@ void LED_Drive_CallBack(void const* argument)  //LED驱动线程
 		else
 		{
 			GameOver_flg = 1;//游戏结束
+			if (tft_count<2)  //向tft发送两次数据
+			{
+				tft_count++;
+				if (Press_Count<7)   //当点击次数小于灯的个数时 再×个单击次数和总灯数的比值    Last_score * (单击次数/灯的个数)
+					Last_score = User_score * 100 / 7;//取击中百分比
+				else
+					Last_score = User_score * 100 / Press_Count;//取击中百分比
+				Uart_printf(&huart1, "Last_score=%d\r\n", Last_score);
+				if (Last_score >= 80)
+				{
+					Turen_Pic(TFT_PAGE_SUCCESS);//进入成功页面
+					SetSountValue(TFT_MUSIC_VALUE);//设置音量
+					playmusic(TFT_MUSIC_ADRESS_SCORE, TFT_MUSIC_VALUE);
+					//播放成功音乐
+				}
+				else
+				{
+					Turen_Pic(TFT_PAGE_FAIL);//进入失败页面
+					SetSountValue(TFT_MUSIC_VALUE);//设置音量
+					playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_ADRESS_FAIL);
+					//播放失败音乐
+				}
+				write_variable_store_82_1word(TFT_ADRESS_LAST_SCORE, Last_score);
+			}
 			//超时后的处理（游戏结束）
 		}
 		//向TFT屏发送数据
@@ -314,10 +340,12 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 	 if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_LONG_START)
 	 {
 		 Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START \r\n");
+		 Turen_Pic(TFT_PAGE_DAT);//进入数据界面
 		 //在此加入蜂鸣器bip.....**********************************
 		 Game_Tim_Long = TIM_LONG;//重置时间，重新开始下一次
 		 User_score = 0;//清空分数
 		 GameOver_flg = 0;//游戏结束置零
+		 Press_Count = 0;//按下次数清零
 		 
 	 }
 	

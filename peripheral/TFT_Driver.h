@@ -17,4 +17,5 @@ void stopmusic(uint16_t num);
 void Turen_Pic(uint16_t num);
 void TFT_Beep(uint8_t n);//TFTÆÁ·äÃùÆ÷;
 void TFT_Readbytes(uint8_t adress, uint8_t readlen, UART_HandleTypeDef *huart);//¶Á¼Ä´æÆ÷;
+void SetSountValue(uint8_t val);
 #endif // !_TFT_DRIVER_H

@@ -139,7 +139,7 @@ void TFT_playsound(uint8_t data_length, uint8_t *data, UART_HandleTypeDef *huart
 // 返回值:   void
 // Qualifier:音乐播放
 // 参数: uint16_t num
-// 参数: uint8_t val
+// 参数: uint8_t val   音量
 //************************************
 void playmusic(uint16_t num, uint8_t val)
 {
@@ -152,6 +152,15 @@ void playmusic(uint16_t num, uint8_t val)
 		val = 64;
 	senddat[4] = val;
 	write_multiple_register_80(0x50, 5, senddat);
+}
+void SetSountValue(uint8_t val) //设置音量
+{
+	//A5 5A 04 80 53 5A 06 
+	uint8_t senddat[2] = { 0 };
+	senddat[0] = 0x5A;
+	senddat[1] = val;
+	write_multiple_register_80(0x53, 2, senddat);
+
 }
 //************************************
 // 函数:    stopmusic

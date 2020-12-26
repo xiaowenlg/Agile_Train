@@ -88,7 +88,7 @@
 #define TIP_COUNT				2							//提示次数
 
 
-#define  TIM_LONG				60							//每局的时长单位s
+#define  TIM_LONG				20							//每局的时长单位s
 #define  TIM_PERIOD				1000						//时间检测周期1000ms
 //屏幕地值
 #define	TFT_ADRESS_TIM_BACK		0x0001						//倒计时地址
@@ -97,6 +97,17 @@
 #define TFT_ADRESS_BT			0x0003						//电池电量
 #define TFT_ADRESS_DISHU		0x0005						//地鼠变量图标
 #define TFT_BUTTON				0x4F						//TFT屏上的按钮
+#define TFT_ADRESS_LAST_SCORE	0x0006						//成绩地址
+#define TFT_ADRESS_SET_LEVEL	0x0007						//等级设置
+#define TFT_PAGE_SUCCESS		2							//胜利页面
+#define TFT_PAGE_FAIL			3							//失败页面
+#define TFT_PAGE_SET			4							//设置页面
+#define TFT_PAGE_DAT			1							//数据页面
+
+//音频地址
+#define TFT_MUSIC_ADRESS_SCORE	52							//胜利音乐
+#define TFT_MUSIC_ADRESS_FAIL	50							//失败音乐
+#define TFT_MUSIC_VALUE			5						//播放音量
 //调试开关
 #define DEBUG_PRINT					1                                
 #endif // !__BSPCONFIG_H
