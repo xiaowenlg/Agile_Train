@@ -35,6 +35,7 @@
 #include "Key.h"
 #include "TFT_Driver.h"
 #include "tim.h"
+#include "adc.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 
@@ -365,9 +366,14 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 	 if (flex_button_event_read(&user_button[USER_BUTTON_2]) == FLEX_BTN_PRESS_LONG_START)//调试和正常运行切换按钮_长按
 	 {
 		 debug_run_flg = !debug_run_flg;
-		 if (debug_run_flg)
+		 debug_count = 0;
+		 if (debug_run_flg)//进入调试界面
 		 {
-			 debug_count = 0;
+			 Turen_Pic(TFT_PAGE_DEBUG);//进入调试页面
+		 }
+		 else
+		 {
+			 Turen_Pic(TFT_PAGE_DAT);//接入数据页面
 		 }
 
 	 }
@@ -387,7 +393,7 @@ void Game_Data_Init()
 	Led_period = GradeArr[game_level];
 	write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level);
 }
-//正常运行函数
+//正常运行函数  //在LED_Drive_CallBack被调用
 void Run_Task(void)
 {
 	if (Game_Tim_Long >= 0)//判断是否到结束时间
@@ -408,9 +414,11 @@ void Run_Task(void)
 		write_variable_store_82_1word(TFT_ADRESS_TIM_BACK, Game_Tim_Long);//发送倒计时
 		write_variable_store_82_1word(TFT_ADRESS_SCOERE, User_score);//发送击中数
 		write_variable_store_82_1word(TFT_ADRESS_COUNT, Press_Count);
+		write_variable_store_82_1word(TFT_ADRESS_BT, ADC_GetValue(&hadc1, 10));			//电池电量)
 	}
 	else
 	{
+		//超时后的处理（游戏结束）
 		GameOver_flg = 1;//游戏结束
 		if (tft_count < 2)  //向tft发送两次数据
 		{
@@ -424,19 +432,19 @@ void Run_Task(void)
 			{
 				Current_page_ID = Turen_Pic(TFT_PAGE_SUCCESS);//进入成功页面
 				SetSountValue(TFT_MUSIC_VALUE);//设置音量
-				//playmusic(TFT_MUSIC_ADRESS_SCORE, TFT_MUSIC_VALUE);
+				playmusic(TFT_MUSIC_ADRESS_SCORE, TFT_MUSIC_VALUE);
 				//播放成功音乐
 			}
 			else
 			{
 				Current_page_ID = Turen_Pic(TFT_PAGE_FAIL);//进入失败页面
 				SetSountValue(TFT_MUSIC_VALUE);//设置音量
-				//playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_ADRESS_FAIL);
+				playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_ADRESS_FAIL);
 				//播放失败音乐
 			}
 			write_variable_store_82_1word(TFT_ADRESS_LAST_SCORE, Last_score);
 		}
-		//超时后的处理（游戏结束）
+		
 	}
 }
 void Debug_Task(void)//调试函数
@@ -444,6 +452,7 @@ void Debug_Task(void)//调试函数
 	if (debug_count<7)
 	{
 		HC595_SendData(1 << debug_count);//led灯从0-6运行一遍
+		write_variable_store_82_1word(TFT_ADRESS_DEBUG_COUNT, debug_count);//发送debue_count到屏幕
 	}
 }
 /* USER CODE END Application */

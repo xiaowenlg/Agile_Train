@@ -38,6 +38,9 @@ extern ADC_HandleTypeDef hadc1;
 
 void MX_ADC1_Init(void);
 
+uint16_t ADC_Conversion(ADC_HandleTypeDef *hadc, uint8_t times);
+int ADC_Map(int x, int in_min, int in_max, int out_min, int out_max);
+int ADC_GetValue(ADC_HandleTypeDef *hadc, uint8_t times);
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */
