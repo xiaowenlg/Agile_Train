@@ -297,7 +297,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 				write_variable_store_82_1word(TFT_ADRESS_DISHU, value);
 				playmusic(TFT_MUSIC_60, TFT_MUSIC_VALUE); //击中的音效
 				User_score++;
-				Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d,The Score = %d\r\n", key_id, User_score);
+				//Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d,The Score = %d\r\n", key_id, User_score);
 			}
 			else
 			{
@@ -317,7 +317,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 	//按键控制
 	 if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_LONG_START)//重新开始按钮长按
 	 {
-		 Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START \r\n");
+		// Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START \r\n");
 		 Current_page_ID = Turen_Pic(TFT_PAGE_DAT);//进入数据界面
 		 //在此加入蜂鸣器bip.....**********************************
 		 Game_Tim_Long = TIM_LONG;//重置时间，重新开始下一次
@@ -348,7 +348,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 				 HAL_TIM_Base_Start_IT(&htim2);
 			 }
 		 }
-		 Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START_BUTTON1=%d \r\n",set_flg);
+		// Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START_BUTTON1=%d \r\n",set_flg);
 	 }
 	 if (flex_button_event_read(&user_button[USER_BUTTON_1]) == FLEX_BTN_PRESS_CLICK)//设置按钮按下
 	 {
@@ -365,7 +365,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 			
 			Led_period = GradeArr[game_level];
 			write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level+1);
-			Uart_printf(&huart1, "FLEX=%d \r\n", game_level);
+			//Uart_printf(&huart1, "FLEX=%d \r\n", game_level);
 			
 		}
 		
@@ -433,12 +433,14 @@ void Run_Task(void)
 		{
 			tft_count++;
 			//set_flg = 0;//可以进入设置界面了
-			if (Press_Count < (TIM_LONG*1000.00/Led_period))   //当点击次数小于灯的个数时 再×个单击次数和总灯数的比值    Last_score * (单击次数/灯的个数)
+			if (Press_Count < (TIM_LONG*1000.00 / Led_period))   //当点击次数小于灯的个数时 再×个单击次数和总灯数的比值    Last_score * (单击次数/灯的个数)
+			{
 				Last_score = (User_score * 100 * Led_period) / (TIM_LONG*1000.00);//取击中百分比
+				Last_score = Last_score*(User_score / Press_Count); //按错扣分
+			}
 			else
 				Last_score = User_score * 100 / Press_Count;//取击中百分比
-			Uart_printf(&huart1, "Last_score=%d\r\n", Last_score);
-			if (Last_score >= 80)
+			if (Last_score >= SUCCESS_SCOERE)
 			{
 				Current_page_ID = Turen_Pic(TFT_PAGE_SUCCESS);//进入成功页面
 				SetSountValue(TFT_MUSIC_VALUE);//设置音量

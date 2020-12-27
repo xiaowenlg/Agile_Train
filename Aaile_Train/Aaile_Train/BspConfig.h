@@ -77,7 +77,10 @@
 #define TFT_MUSIC_56			56							//音效
 #define TFT_MUSIC_60			60							//击中
 #define TFT_MUSIC_59			59							//啊偶
-#define TFT_MUSIC_VALUE			0x40							//播放音量
+#define TFT_MUSIC_VALUE			0x40						//播放音量
+
+//胜利分数
+#define SUCCESS_SCOERE			80							//胜利分数线
 //调试开关
 #define DEBUG_PRINT					1                                
 #endif // !__BSPCONFIG_H
