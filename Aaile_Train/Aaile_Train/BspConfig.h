@@ -72,6 +72,11 @@
 //音频地址
 #define TFT_MUSIC_ADRESS_SCORE	52							//胜利音乐
 #define TFT_MUSIC_ADRESS_FAIL	50							//失败音乐
+#define TFT_MUSIC_55			55							//ha-ha
+#define TFT_MUSIC_53			53							//请不要多次按下
+#define TFT_MUSIC_56			56							//音效
+#define TFT_MUSIC_60			60							//击中
+#define TFT_MUSIC_59			59							//啊偶
 #define TFT_MUSIC_VALUE			0x40							//播放音量
 //调试开关
 #define DEBUG_PRINT					1                                

@@ -244,7 +244,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 {
 	flex_button_t *btn = (flex_button_t *)arg;
 	uint8_t value = 0,key_id = 50;
-	
+	static uint8_t i = 0;
 	//Uart_printf(&huart1, "Button id=%d\r\n", btn->id);
 	
 	if (flex_button_event_read(&user_button[USER_BUTTON_0]) == FLEX_BTN_PRESS_CLICK)
@@ -295,13 +295,19 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 				value = Move_Index&(~Move_Index);
 				HC595_SendData(value);
 				write_variable_store_82_1word(TFT_ADRESS_DISHU, value);
-				TFT_Beep(10);//长鸣一下
+				playmusic(TFT_MUSIC_60, TFT_MUSIC_VALUE); //击中的音效
 				User_score++;
 				Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d,The Score = %d\r\n", key_id, User_score);
 			}
 			else
 			{
 				//在此提示用户多按了没用**************************
+				if (i++>2)
+				{
+					i = 0;
+					playmusic(TFT_MUSIC_53, TFT_MUSIC_VALUE);
+				}
+				
 			}
 			
 		
@@ -408,7 +414,7 @@ void Run_Task(void)
 			HC595_SendData(1 << Move_Index);
 			Led_App(1 << Move_Index);
 			write_variable_store_82_1word(TFT_ADRESS_DISHU, Move_Index + 1);//地鼠出动
-			//TFT_Beep(2);// bi-bi 声音
+			playmusic(TFT_MUSIC_55, TFT_MUSIC_VALUE);
 			write_register_80_1byte(TFT_BUTTON, 1);
 			//Uart_printf(&huart1, "LED_Value=%d,period=%d\r\n", Move_Index, Game_Tim_Long);
 			Notice_flg = 0;
