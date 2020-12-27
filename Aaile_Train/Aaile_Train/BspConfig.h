@@ -52,7 +52,7 @@
 //#define QING_YONG_LI_WO				38						//请用力握住握力器
 
 
-#define  TIM_LONG				60							//每局的时长单位s
+#define  TIM_LONG				60.00							//每局的时长单位s
 #define  TIM_PERIOD				1000						//时间检测周期1000ms
 //屏幕地值
 #define	TFT_ADRESS_TIM_BACK		0x0001						//倒计时地址
@@ -72,7 +72,7 @@
 //音频地址
 #define TFT_MUSIC_ADRESS_SCORE	52							//胜利音乐
 #define TFT_MUSIC_ADRESS_FAIL	50							//失败音乐
-#define TFT_MUSIC_VALUE			0x01							//播放音量
+#define TFT_MUSIC_VALUE			0x40							//播放音量
 //调试开关
 #define DEBUG_PRINT					1                                
 #endif // !__BSPCONFIG_H

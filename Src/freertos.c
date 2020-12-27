@@ -295,7 +295,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 				value = Move_Index&(~Move_Index);
 				HC595_SendData(value);
 				write_variable_store_82_1word(TFT_ADRESS_DISHU, value);
-				TFT_Beep(50);//长鸣一下
+				TFT_Beep(10);//长鸣一下
 				User_score++;
 				Uart_printf(&huart1, "FLEX_BTN_PRESS_CLICK id=%d,The Score = %d\r\n", key_id, User_score);
 			}
@@ -323,9 +323,10 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 	 }
 	 if (flex_button_event_read(&user_button[USER_BUTTON_1]) == FLEX_BTN_PRESS_LONG_START)//设置按钮长按
 	 {
-		 set_flg = !set_flg;
+		 
 		 if (GameOver_flg) //游戏结束后才可设置
 		 {
+			 set_flg = !set_flg;
 			 if (set_flg)
 			 {
 				 Current_page_ID = Turen_Pic(TFT_PAGE_SET);//进入设置界面
@@ -343,22 +344,22 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 		 }
 		 Uart_printf(&huart1, "FLEX_BTN_PRESS_LONG_START_BUTTON1=%d \r\n",set_flg);
 	 }
-	 if (flex_button_event_read(&user_button[USER_BUTTON_1]) == FLEX_BTN_PRESS_DOWN)//设置按钮按下
+	 if (flex_button_event_read(&user_button[USER_BUTTON_1]) == FLEX_BTN_PRESS_CLICK)//设置按钮按下
 	 {
 		if (set_flg==1&&Current_page_ID==TFT_PAGE_SET)
 		{
 			
-			if (game_level < 5)
+			if (game_level < 4)
 			{
-				Led_period = GradeArr[game_level];
-				write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level);
-				Uart_printf(&huart1, "FLEX=%d \r\n", game_level);
+				
 				game_level++;
 			}
 			else
 				game_level = 0;
 			
-			
+			Led_period = GradeArr[game_level];
+			write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level+1);
+			Uart_printf(&huart1, "FLEX=%d \r\n", game_level);
 			
 		}
 		
@@ -374,10 +375,12 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 		 else
 		 {
 			 Turen_Pic(TFT_PAGE_DAT);//接入数据页面
+			 Game_Tim_Long = TIM_LONG;
+			 HAL_TIM_Base_Start_IT(&htim2);
 		 }
 
 	 }
-
+	 write_register_80_1byte(TFT_BUTTON, 1);//用于开屏
 	
 }
 //游戏数据初始
@@ -423,8 +426,9 @@ void Run_Task(void)
 		if (tft_count < 2)  //向tft发送两次数据
 		{
 			tft_count++;
-			if (Press_Count < 7)   //当点击次数小于灯的个数时 再×个单击次数和总灯数的比值    Last_score * (单击次数/灯的个数)
-				Last_score = User_score * 100 / 7;//取击中百分比
+			//set_flg = 0;//可以进入设置界面了
+			if (Press_Count < (TIM_LONG*1000.00/Led_period))   //当点击次数小于灯的个数时 再×个单击次数和总灯数的比值    Last_score * (单击次数/灯的个数)
+				Last_score = (User_score * 100 * Led_period) / (TIM_LONG*1000.00);//取击中百分比
 			else
 				Last_score = User_score * 100 / Press_Count;//取击中百分比
 			Uart_printf(&huart1, "Last_score=%d\r\n", Last_score);
@@ -439,7 +443,7 @@ void Run_Task(void)
 			{
 				Current_page_ID = Turen_Pic(TFT_PAGE_FAIL);//进入失败页面
 				SetSountValue(TFT_MUSIC_VALUE);//设置音量
-				playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_ADRESS_FAIL);
+				playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_VALUE);
 				//播放失败音乐
 			}
 			write_variable_store_82_1word(TFT_ADRESS_LAST_SCORE, Last_score);
