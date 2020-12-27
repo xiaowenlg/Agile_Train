@@ -394,7 +394,7 @@ void Game_Data_Init()
 	Press_Count = 0;//按下次数清零
 	game_level = 0;//游戏等级清空
 	Led_period = GradeArr[game_level];
-	write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level);
+	write_variable_store_82_1word(TFT_ADRESS_SET_LEVEL, game_level+1);
 }
 //正常运行函数  //在LED_Drive_CallBack被调用
 void Run_Task(void)
