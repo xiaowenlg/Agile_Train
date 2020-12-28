@@ -282,6 +282,7 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 	 {
 		 key_id = btn->id;
 		 Press_Count++;
+		 Turen_Pic(1);
 	 }
 	
 	 
@@ -302,10 +303,10 @@ static void common_btn_evt_cb(void *arg)//按键事件回调函数
 			else
 			{
 				//在此提示用户多按了没用**************************
-				if (i++>2)
+				if (i++>1)
 				{
 					i = 0;
-					playmusic(TFT_MUSIC_53, TFT_MUSIC_VALUE);
+					playmusic(TFT_MUSIC_PASS_TOO_MORE, TFT_MUSIC_VALUE);
 				}
 				
 			}
@@ -442,6 +443,7 @@ void Run_Task(void)
 				Last_score = User_score * 100 / Press_Count;//取击中百分比
 			if (Last_score >= SUCCESS_SCOERE)
 			{
+				
 				Current_page_ID = Turen_Pic(TFT_PAGE_SUCCESS);//进入成功页面
 				SetSountValue(TFT_MUSIC_VALUE);//设置音量
 				playmusic(TFT_MUSIC_ADRESS_SCORE, TFT_MUSIC_VALUE);
@@ -454,6 +456,7 @@ void Run_Task(void)
 				playmusic(TFT_MUSIC_ADRESS_FAIL, TFT_MUSIC_VALUE);
 				//播放失败音乐
 			}
+			//Uart_printf(&huart1, "SUCCESS_SCOERE=%d\r\n", Last_score);
 			write_variable_store_82_1word(TFT_ADRESS_LAST_SCORE, Last_score);
 		}
 		
@@ -465,6 +468,7 @@ void Debug_Task(void)//调试函数
 	{
 		HC595_SendData(1 << debug_count);//led灯从0-6运行一遍
 		write_variable_store_82_1word(TFT_ADRESS_DEBUG_COUNT, debug_count);//发送debue_count到屏幕
+		
 	}
 }
 /* USER CODE END Application */
