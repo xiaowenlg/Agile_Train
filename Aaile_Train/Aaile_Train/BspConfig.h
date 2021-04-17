@@ -78,7 +78,7 @@
 #define TFT_MUSIC_60			60							//击中
 #define TFT_MUSIC_59			59							//啊偶
 #define TFT_MUSIC_VALUE			0x10						//播放音量
-#define TFT_MUSIC_PASS_TOO_MORE 54			
+#define TFT_MUSIC_PASS_TOO_MORE TFT_MUSIC_53							//
 //胜利分数
 #define SUCCESS_SCOERE			80							//胜利分数线
 //调试开关
